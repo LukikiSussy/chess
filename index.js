@@ -1,28 +1,19 @@
 const express = require("express");
 const cors = require("cors");
 
+const gameController = require("./controllers/controller");
+
 const app = express();
 const port = 3000;
 
-const gameObj = require("./gameObj").Game;
 
+app.use(express.json()) 
 app.use(cors({
     origin: '*'
 }));
 
-var games = [];
-
-app.post("/api/v1/game", (req, res) => {
-    console.log(req.body);
-    let id = games.length;
-    games.push(new gameObj(id));
-    res.status(200).send("Redirecting");
-    res.redirect(`/api/v1/game/${id}`);
-
-    //res.header("Content-Type", "application/json");
-    //res.write(JSON.stringify({board:games[0]}));
-    res.end();
-});
+app.post("/api/v1/game", gameController.createGame);
+app.post("/api/v1/game/:id", gameController.move);
 
 
 
