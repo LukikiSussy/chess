@@ -50,7 +50,8 @@
             .then(async function(res){ 
                 res = await res.json();
 
-                console.log(res.board)
+                console.log(res.game.board)
+                console.log(res.moveStatus)
             })
             .catch(function(res){ console.log(res) })
         }

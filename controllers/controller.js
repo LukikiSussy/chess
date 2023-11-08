@@ -18,9 +18,12 @@ const createGame = (req, res) => {
 const move = async (req, res) => {
     const currentGame = games[req.body.gameId];
 
-    await currentGame.makeMove(req.body.move);
+    moveStatus = await currentGame.makeMove(req.body.move);
 
-    res.status(200).send(currentGame);
+    res.status(200).send({
+        "game": currentGame,
+        "moveStatus": moveStatus
+    });
     res.end();
 }
 

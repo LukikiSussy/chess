@@ -1,5 +1,26 @@
 const row = "RNBQKBNR"
 
+const {rook} = require("./figures/rook");
+const {queen} = require("./figures/queen");
+const {pawn} = require("./figures/pawn");
+const {king} = require("./figures/king");
+const {knight} = require("./figures/knight");
+const {bishop} = require("./figures/bishop");
+
+const figures = {
+    "R": rook,
+    "N": knight,
+    "B": bishop,
+    "Q": queen,
+    "K": king,
+    "P": pawn
+}
+
+const players = {
+    "whiteFinished": "black",
+    "blackFinished": "white"
+}
+
 class Game {
     currentPlayer = "white";
     gameStatus = "active";
@@ -11,9 +32,25 @@ class Game {
     }
 
     async makeMove(move) {
-        moveArray = move.split(" ");
-        board[moveArray[1][1]][moveArray[1][0]] = board[moveArray[0][1]][moveArray[0][0]];
-        board[moveArray[0][1]][moveArray[0][0]] = " ";
+        var splitMove = move.split("-");
+        for (let i = 0; i < splitMove.length; i++) {
+            splitMove[i] = splitMove[i].split("");
+            splitMove[i][0] = splitMove[i][0].charCodeAt(0) - 97;
+            splitMove[i][1]--
+
+            if (splitMove[i][0] > 7 || splitMove[i][0] < 0 || splitMove[i][1] > 7 || splitMove[i][1] < 0) {
+                return "invalid piece location";
+            }
+        }
+
+        var from = splitMove[0];
+        var to = splitMove[1];
+
+        const moveResponse = this.board[from[1]][from[0]].move(from, to);
+        console.log(moveResponse)
+
+        this.currentPlayer = players[`${this.currentPlayer}Finished`];
+        return "move completed successfully";
     }
 
     resetBoard() {
@@ -23,24 +60,22 @@ class Game {
             newBoard[y] = [];
             for (let x = 0; x < 8; x++) {
                 if (y == 0) {
-                    newBoard[y][x] = "w" + row[x];
+                    newBoard[y][x] = new figures[row[x]]("white");
                 }
                 else if (y == 1) {
-                    newBoard[y][x] = "wP"
+                    newBoard[y][x] = new pawn("white");
                 }
                 else if (y == 6) {
-                    newBoard[y][x] = "bP"
+                    newBoard[y][x] = new pawn("black");
                 }
                 else if (y == 7) {
-                    newBoard[y][x] = "b" + row[x];
+                    newBoard[y][x] = new figures[row[x]]("black");
                 }
                 else {
                     newBoard[y][x] = " ";
                 }
             }            
         }
-
-
 
         return newBoard;
     }
