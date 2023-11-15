@@ -46,9 +46,21 @@ class Game {
         var from = splitMove[0];
         var to = splitMove[1];
 
-        const moveResponse = this.board[from[1]][from[0]].move(from, to);
-        console.log(moveResponse)
+        //kontrola jestli je tak legalni
+        if(this.board[from[1]][from[0]] == " ") return "no piece at that location"
+        if(this.board[from[1]][from[0]].color != this.currentPlayer) return `it is not ${this.currentPlayer}'s turn!`
 
+        const moveResponse = this.board[from[1]][from[0]].move(from, to, this.board);
+        
+        if(moveResponse) {
+            this.board[to[1]][to[0]] = this.board[from[1]][from[0]];
+            this.board[from[1]][from[0]] = " ";
+        }
+        else {
+            return "invalid move";
+        }
+
+        //zmena hrace bily na cerneho a naopak
         this.currentPlayer = players[`${this.currentPlayer}Finished`];
         return "move completed successfully";
     }

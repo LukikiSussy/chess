@@ -22,7 +22,7 @@ const move = async (req, res) => {
 
     res.status(200).send({
         "game": currentGame,
-        "moveStatus": moveStatus
+        "moveStatus": moveStatus,
     });
     res.end();
 }
