@@ -47,8 +47,9 @@ class Game {
         var to = splitMove[1];
 
         //kontrola jestli je tak legalni
+        if(from[0] == to[0] && from[1] == to[1]) return "that is not a move"
         if(this.board[from[1]][from[0]] == " ") return "no piece at that location"
-        if(this.board[from[1]][from[0]].color != this.currentPlayer) return `it is not ${this.currentPlayer}'s turn!`
+        if(this.board[from[1]][from[0]].color != this.currentPlayer) return `it is not ${this.board[from[1]][from[0]].color}'s turn!`
 
         const moveResponse = this.board[from[1]][from[0]].move(from, to, this.board);
         
@@ -61,7 +62,7 @@ class Game {
         }
 
         //zmena hrace bily na cerneho a naopak
-        this.currentPlayer = players[`${this.currentPlayer}Finished`];
+        //this.currentPlayer = players[`${this.currentPlayer}Finished`];
         return "move completed successfully";
     }
 
@@ -74,13 +75,16 @@ class Game {
                 if (y == 0) {
                     newBoard[y][x] = new figures[row[x]]("white");
                 }
-                else if (y == 1) {
+                /*else if (y == 1) {
                     newBoard[y][x] = new pawn("white");
                 }
                 else if (y == 6) {
                     newBoard[y][x] = new pawn("black");
-                }
+                }*/
                 else if (y == 7) {
+                    newBoard[y][x] = new figures[row[x]]("black");
+                }
+                else if (x == 0 && y == 4) {
                     newBoard[y][x] = new figures[row[x]]("black");
                 }
                 else {
