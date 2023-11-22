@@ -15,13 +15,11 @@ class rook {
         if(from[1] == to[1]) {
             if(from[0] - to[0] > 0) {
                 for (let i = to[0]; i < from[0]; i++) {
-                    console.log(i, from)
                     if(board[to[1]][i] != " ") return false;
                 }
             }
             else {
                 for (let i = from[0]+1; i < to[0]; i++) {
-                    console.log(i, to)
                     if(board[to[1]][i] != " ") return false;
                 }
             }
@@ -30,13 +28,11 @@ class rook {
         else if(from[0] == to[0]) {
             if(from[1] - to[1] > 0) {
                 for (let i = to[1]; i < from[1]; i++) {
-                    console.log(i, from)
                     if(board[i][to[0]] != " ") return false;
                 }
             }
             else {
                 for (let i = from[1]+1; i < to[1]; i++) {
-                    console.log(i, to)
                     if(board[i][to[0]] != " ") return false;
                 }
             }

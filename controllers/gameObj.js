@@ -84,7 +84,7 @@ class Game {
                 else if (y == 7) {
                     newBoard[y][x] = new figures[row[x]]("black");
                 }
-                else if (x == 0 && y == 4) {
+                else if (y == 4) {
                     newBoard[y][x] = new figures[row[x]]("black");
                 }
                 else {

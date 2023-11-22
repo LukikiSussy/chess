@@ -5,7 +5,25 @@
     <title>Titulek</title>
  
     <style>
+        .cell {
+            width: 2vw;
+            height: 2vw;
+            border: solid black;
+            border-width: 2px 2px 1px 1px;
+        }
 
+        .text {
+            font-size: 50px;
+            font-weight: bold;
+            display: table-cell;
+            row-gap: 100px;
+        }
+
+        .Row {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
 
     </style>
  
@@ -26,6 +44,22 @@
             id = res.gameId;
 
             console.log(res.board)
+
+            for (let i = 7; i >= 0; i--) {
+                let row = document.createElement("tr");
+                for (let j = 0; j < 8; j++) {
+                    let cell = document.createElement("td");
+                    if((i+j) % 2 == 0) {
+                        cell.style.backgroundColor = "brown";
+                    }
+                    cell.id = `cell${i}${j}`;
+                    cell.classList.add("cell");
+                    row.appendChild(cell);
+                }
+                document.body.appendChild(row);
+            }
+
+            updateBoard(res.board)
         })
         .catch(function(res){ console.log(res) })
 
@@ -47,14 +81,29 @@
                 gameId: id
         })
             })
-            .then(async function(res){ 
+            .then(async function(res){
                 res = await res.json();
 
                 console.log(res.game.board)
                 console.log(res.moveStatus)
                 console.log(res.game.currentPlayer)
+
+                updateBoard(res.game.board)
             })
             .catch(function(res){ console.log(res) })
+        }
+
+        function updateBoard(board) {
+            for (let i = 0; i < board.length; i++) {
+                for (let j = 0; j < board[i].length; j++) {
+                    if(board[i][j] != " ") {
+                        document.getElementById(`cell${i}${j}`).innerHTML = board[i][j].type + " " + board[i][j].color;
+                    }
+                    else {
+                        document.getElementById(`cell${i}${j}`).innerHTML = " "
+                    }
+                }
+            }
         }
     </script>
 </head>
