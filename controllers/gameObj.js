@@ -24,11 +24,11 @@ const players = {
 class Game {
     currentPlayer = "white";
     gameStatus = "active";
-    moves = [];
 
     constructor(id) {
         this.gameId = id;
         this.board = this.resetBoard();
+        this.updatePieces(this.board);
     }
 
     async makeMove(move) {
@@ -51,11 +51,13 @@ class Game {
         if(this.board[from[1]][from[0]] == " ") return "no piece at that location"
         if(this.board[from[1]][from[0]].color != this.currentPlayer) return `it is not ${this.board[from[1]][from[0]].color}'s turn!`
 
-        const moveResponse = this.board[from[1]][from[0]].move(from, to, this.board);
+        const moveResponse = this.board[from[1]][from[0]].move(to);
         
         if(moveResponse) {
             this.board[to[1]][to[0]] = this.board[from[1]][from[0]];
+            this.board[to[1]][to[0]].position = to;
             this.board[from[1]][from[0]] = " ";
+            this.updatePieces(this.board);
         }
         else {
             return "invalid move";
@@ -73,19 +75,16 @@ class Game {
             newBoard[y] = [];
             for (let x = 0; x < 8; x++) {
                 if (y == 0) {
-                    newBoard[y][x] = new figures[row[x]]("white");
+                    newBoard[y][x] = new figures[row[x]]("white", [x, y]);
                 }
-                /*else if (y == 1) {
-                    newBoard[y][x] = new pawn("white");
+                else if (y == 3) {
+                    newBoard[y][x] = new pawn("white", [x, y]);
                 }
                 else if (y == 6) {
-                    newBoard[y][x] = new pawn("black");
-                }*/
-                else if (y == 7) {
-                    newBoard[y][x] = new figures[row[x]]("black");
+                    newBoard[y][x] = new pawn("black", [x, y]);
                 }
-                else if (y == 4) {
-                    newBoard[y][x] = new figures[row[x]]("black");
+                else if (y == 7) {
+                    newBoard[y][x] = new figures[row[x]]("black", [x, y]);
                 }
                 else {
                     newBoard[y][x] = " ";
@@ -94,6 +93,16 @@ class Game {
         }
 
         return newBoard;
+    }
+
+    updatePieces(board) {
+        for (let y = 0; y < 8; y++) {
+            for (let x = 0; x < 8; x++) {
+                if(board[y][x] != " ") {
+                    board[y][x].generateMoves(board);
+                }
+            }
+        }
     }
 }
 

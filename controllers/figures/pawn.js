@@ -1,10 +1,19 @@
 class pawn {
     hasBeenMoved = false;
     type = "pawn";
+    validMoves = [];
+    position = [];
 
-    constructor(color) {
+    constructor(color, pos) {
         this.color = color;
+
+        this.position = pos;
     }
+
+    generateMoves(board) {
+        
+    }
+
 
     move(from, to, board) {
         if(this.canCapture(from, to, board)) return true;
