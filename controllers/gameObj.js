@@ -78,7 +78,7 @@ class Game {
                     newBoard[y][x] = new figures[row[x]]("white", [x, y]);
                 }
                 else if (y == 3) {
-                    newBoard[y][x] = new pawn("white", [x, y]);
+                    newBoard[y][x] = new pawn("black", [x, y]);
                 }
                 else if (y == 6) {
                     newBoard[y][x] = new pawn("black", [x, y]);
