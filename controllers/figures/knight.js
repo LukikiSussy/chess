@@ -24,7 +24,6 @@ class knight {
 
             } 
         }
-        console.log(this.validMoves)
     }
 
 
