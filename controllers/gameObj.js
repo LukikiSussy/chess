@@ -22,7 +22,7 @@ const players = {
 }
 
 class Game {
-    currentPlayer = "black";
+    currentPlayer = "white";
     gameStatus = "active";
 
     constructor(id) {
@@ -65,7 +65,7 @@ class Game {
         }
 
         //zmena hrace bily na cerneho a naopak
-        this.currentPlayer = players[`${this.currentPlayer}Finished`];
+        //this.currentPlayer = players[`${this.currentPlayer}Finished`];
         return "move completed successfully";
     }
 
