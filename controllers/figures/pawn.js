@@ -1,65 +1,91 @@
 class pawn {
     hasBeenMoved = false;
+    hasBeenDoubleMoved = false;
     type = "pawn";
     validMoves = [];
     position = [];
+    direction = 0;
 
     constructor(color, pos) {
         this.color = color;
 
         this.position = pos;
+
+        if(this.color == "white") {
+            this.direction = 1;
+        }
+        else {
+            this.direction = -1;
+        }
     }
 
     generateMoves(board) {
-        
+        this.validMoves = [];
+
+        //capture moves
+        try {
+            if(board[this.position[1]+this.direction][this.position[0]+1] != " " && board[this.position[1]+this.direction][this.position[0]+1] != undefined) {
+                if(board[this.position[1]+this.direction][this.position[0]+1].color != this.color) {
+                    this.validMoves.push([this.position[0]+1, this.position[1]+this.direction]);
+                }
+            }
+        }
+        catch { 
+        }
+        try {
+            if(board[this.position[1]+this.direction][this.position[0]-1] != " " && board[this.position[1]+this.direction][this.position[0]-1] != undefined) {
+                if(board[this.position[1]+this.direction][this.position[0]-1].color != this.color) {
+                    this.validMoves.push([this.position[0]-1, this.position[1]+this.direction]);
+                }
+            }
+        }
+        catch{
+        }
+
+        //forward
+        if(board[this.position[1]+this.direction][this.position[0]] == " ") {
+            this.validMoves.push([this.position[0], this.position[1]+this.direction]);
+
+            if(board[this.position[1]+(this.direction*2)][this.position[0]] == " " && !this.hasBeenMoved) {
+                this.validMoves.push([this.position[0], this.position[1]+(this.direction*2)]);
+            }
+        }
+
+        //en passant
+        try {
+            if(board[this.position[1]][this.position[0]+1] != " " && board[this.position[1]][this.position[0]+1] != undefined) {
+                if(board[this.position[1]][this.position[0]+1].color != this.color && board[this.position[1]][this.position[0]+1].hasBeenDoubleMoved) {
+                    this.validMoves.push([this.position[0]+1, this.position[1]+this.direction]);
+                }
+            }
+        }
+        catch { 
+        }
+        try {
+            if(board[this.position[1]][this.position[0]-1] != " " && board[this.position[1]][this.position[0]-1] != undefined) {
+                if(board[this.position[1]][this.position[0]-1].color != this.color && board[this.position[1]][this.position[0]-1].hasBeenDoubleMoved) {
+                    this.validMoves.push([this.position[0]-1, this.position[1]+this.direction]);
+                }
+            }
+        }
+        catch{
+        }
     }
 
+    move(to) {
+        this.hasBeenDoubleMoved = false;
+        this.hasBeenMoved = true;
 
-    move(from, to, board) {
-        if(this.canCapture(from, to, board)) return true;
+        for(let i = 0; i < this.validMoves.length; i++) {
+            if(this.validMoves[i][0] == to[0] && this.validMoves[i][1] == to[1]) {
 
-        if (from[0] != to[0]) return false;
+                if((to[1] - this.position[1])*this.direction >= 2) {
+                    this.hasBeenDoubleMoved = true;
+                }
 
-        if (this.color == "white") {
-            if(this.hasBeenMoved == false && to[1] - from[1] == 2 && board[to[1]][to[0]] == " " && board[to[1] - 1][to[0]] == " ") {
-                this.hasBeenMoved = true;
                 return true;
             }
-            else if(to[1] - from[1] <= 1 && board[to[1]][to[0]] == " ") {
-                this.hasBeenMoved = true;
-                return true;
-            }
-            return false;
         }
-
-        if (this.color == "black") {
-            if(this.hasBeenMoved == false && to[1] - from[1] == -2 && board[to[1]][to[0]] == " " && board[to[1] + 1][to[0]] == " ") {
-                this.hasBeenMoved = true;
-                return true;
-            }
-            else if(to[1] - from[1] >= -1  && board[to[1]][to[0]] == " ") {
-                this.hasBeenMoved = true;
-                return true;
-            }
-            return false;
-        }
-    }
-
-    canEnPassant(from, to, board) {
-        return false;
-    }
-
-    canCapture(from, to, board) {
-        if(this.color == "white" && board[to[1]][to[0]] != " " && to[1] - from[1] == 1 && to[0] - from[0] == 1 || to[0] - from[0] == -1) {
-            if(board[to[1]][to[0]].color == "white") return false;
-            return true;
-        }
-
-        if(this.color == "black" && board[to[1]][to[0]] != " " && to[1] - from[1] == -1 && to[0] - from[0] == 1 || to[0] - from[0] == -1) {
-            if(board[to[1]][to[0]].color == "black") return false;
-            return true;
-        }
-
         return false;
     }
 }

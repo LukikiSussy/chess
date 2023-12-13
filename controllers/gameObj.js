@@ -22,7 +22,7 @@ const players = {
 }
 
 class Game {
-    currentPlayer = "white";
+    currentPlayer = "black";
     gameStatus = "active";
 
     constructor(id) {
@@ -54,6 +54,7 @@ class Game {
         const moveResponse = this.board[from[1]][from[0]].move(to);
         
         if(moveResponse) {
+            this.chceckForEnPassant(from, to);
             this.board[to[1]][to[0]] = this.board[from[1]][from[0]];
             this.board[to[1]][to[0]].position = to;
             this.board[from[1]][from[0]] = " ";
@@ -64,8 +65,16 @@ class Game {
         }
 
         //zmena hrace bily na cerneho a naopak
-        //this.currentPlayer = players[`${this.currentPlayer}Finished`];
+        this.currentPlayer = players[`${this.currentPlayer}Finished`];
         return "move completed successfully";
+    }
+
+    chceckForEnPassant(from, to) {
+        if(this.board[from[1]][from[0]].type == "pawn") {
+            if(from[0] - to[0] != 0 && this.board[to[1]][to[0]] == " ") {
+                this.board[to[1]-1][to[0]] = " ";
+            }
+        }
     }
 
     resetBoard() {
@@ -77,14 +86,20 @@ class Game {
                 if (y == 0) {
                     newBoard[y][x] = new figures[row[x]]("white", [x, y]);
                 }
-                else if (y == 3) {
-                    newBoard[y][x] = new pawn("black", [x, y]);
+                else if (y == 1) {
+                    newBoard[y][x] = new pawn("white", [x, y]);
                 }
                 else if (y == 6) {
                     newBoard[y][x] = new pawn("black", [x, y]);
                 }
                 else if (y == 7) {
                     newBoard[y][x] = new figures[row[x]]("black", [x, y]);
+                }
+                else if (y == 4 && x == 0) {
+                    newBoard[y][x] = new pawn("white", [x, y]);
+                }
+                else if (y == 4 && x == 1) {
+                    newBoard[y][x] = new pawn("white", [x, y]);
                 }
                 else {
                     newBoard[y][x] = " ";
