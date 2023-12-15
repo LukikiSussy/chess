@@ -38,7 +38,7 @@ class bishop {
             }
         }
         // top left
-        for (let x = this.position[0]-1, y = this.position[1]+1; x >= 0 && y < 8; x++, y++) {
+        for (let x = this.position[0]-1, y = this.position[1]+1; x >= 0 && y < 8; x--, y++) {
             if(board[y][x] == " ") {
                 this.validMoves.push([x, y]);
             }
@@ -51,7 +51,7 @@ class bishop {
             }
         }
         // bott left
-        for (let x = this.position[0]-1, y = this.position[1]-1; x >= 0 && y >= 0; x++, y--) {
+        for (let x = this.position[0]-1, y = this.position[1]-1; x >= 0 && y >= 0; x--, y--) {
             if(board[y][x] == " ") {
                 this.validMoves.push([x, y]);
             }

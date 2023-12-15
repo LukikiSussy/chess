@@ -18,7 +18,7 @@ const createGame = (req, res) => {
 const move = async (req, res) => {
     const currentGame = games[req.body.gameId];
 
-    moveStatus = await currentGame.makeMove(req.body.move);
+    var moveStatus = await currentGame.makeMove(req.body.move);
 
     res.status(200).send({
         "game": currentGame,
@@ -27,8 +27,33 @@ const move = async (req, res) => {
     res.end();
 }
 
+const getValidMoves = async (req, res) => {
+    const currentGame = games[req.body.gameId];
+    const pos = req.body.pos;
+
+    var movesStatus;
+    var validMoves = [];
+
+    if(pos[0] >= 8 || pos[0] < 0 || pos[1] >= 8 || pos[1] < 0) movesStatus = "invalid position";
+    else {
+        validMoves = currentGame.validMoves(pos);
+
+        movesStatus = "ok";
+    }
+
+    res.status(200).send({
+        "movesStatus": movesStatus,
+        "validMoves": validMoves,
+    });
+    res.end();
+
+
+
+}
+
 module.exports = {
     createGame,
     move,
+    getValidMoves,
 
 }

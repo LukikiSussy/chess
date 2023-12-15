@@ -65,7 +65,7 @@ class Game {
         }
 
         //zmena hrace bily na cerneho a naopak
-        //this.currentPlayer = players[`${this.currentPlayer}Finished`];
+        this.currentPlayer = players[`${this.currentPlayer}Finished`];
         return "move completed successfully";
     }
 
@@ -95,12 +95,6 @@ class Game {
                 else if (y == 7) {
                     newBoard[y][x] = new figures[row[x]]("black", [x, y]);
                 }
-                else if (y == 4 && x == 0) {
-                    newBoard[y][x] = new pawn("white", [x, y]);
-                }
-                else if (y == 4 && x == 1) {
-                    newBoard[y][x] = new pawn("white", [x, y]);
-                }
                 else {
                     newBoard[y][x] = " ";
                 }
@@ -118,6 +112,11 @@ class Game {
                 }
             }
         }
+    }
+
+    validMoves(pos) {
+        var moves = this.board[pos[1]][pos[0]].validMoves;
+        return moves;
     }
 }
 

@@ -44,7 +44,7 @@ class rook {
                 this.validMoves.push([this.position[0], y]);
             }
             else if(board[y][this.position[0]].color != this.color) {
-                this.validMoves.push([this.position[1], y]);
+                this.validMoves.push([this.position[0], y]);
                 break;
             }
             else {
@@ -57,7 +57,7 @@ class rook {
                 this.validMoves.push([this.position[0], y]);
             }
             else if(board[y][this.position[0]].color != this.color) {
-                this.validMoves.push([this.position[1], y]);
+                this.validMoves.push([this.position[0], y]);
                 break;
             }
             else {
