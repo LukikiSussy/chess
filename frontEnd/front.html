@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8" />
+    <title>Titulek</title>
+ 
+    <style>
+        #boardContainer {
+            width: max-content;
+            height: max-content;
+            margin: 5vh auto;
+            background-color: red;
+        }
+
+        .cell {
+            width: 5vw;
+            height: 5vw;
+            border: solid black;
+            border-width: 2px 2px 1px 1px;
+
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .text {
+            font-size: 50px;
+            font-weight: bold;
+            display: table-cell;
+            row-gap: 100px;
+        }
+
+        .row {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+    </style>
+
+    <script src="boardBg.js"></script>
+    <script src="fetch.js"></script>
+    <script>
+        var id = null;
+        var boardSize;
+        var boardState;
+        var turn;
+
+        var selectedCell = null;
+        var selectedCellPos;
+        var validMoves;
+
+        async function cellClicked(id, x, y) {
+            if(validMoves) {
+                for (let i = 0; i < validMoves.length; i++) {
+                    if(validMoves[i][0] == x && validMoves[i][1] == y) {
+                        var from = String.fromCharCode(selectedCellPos[0] + 97) + (selectedCellPos[1] + 1);
+                        var to = String.fromCharCode(x + 97) + (y + 1);
+                        
+                        sendMove(`${from}-${to}`);
+                    }
+                }
+            }
+
+            if(id == selectedCell || boardState[y][x].color != turn) {
+                clearColors();
+                selectedCell = null;
+                selectedCellPos = [null, null];
+            }
+            else {
+                clearColors();
+                selectedCell = id;
+                selectedCellPos = [x, y];
+
+                document.getElementById(id).style.backgroundColor = "aqua";
+
+                getValidMoves(x, y);
+            }
+        }
+    </script>
+</head>
+ 
+<body>
+    <div id="boardContainer"></div>
+</body>
+</html>
+
