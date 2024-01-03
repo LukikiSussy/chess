@@ -1,5 +1,6 @@
-const { Game } = require("./gameObj");
+const path = require("path");
 
+const { Game } = require("./gameObj");
 const gameObj = require("./gameObj").Game;
 
 var games = [];
@@ -46,14 +47,16 @@ const getValidMoves = async (req, res) => {
         "validMoves": validMoves,
     });
     res.end();
+}
 
-
-
+const sendFrontEnd = async (req, res) => {
+    console.log(path.join(__dirname, "..", "frontEnd", "front.html"))
+    res.sendFile(path.join(__dirname, "..", "frontEnd", "front.html"));
 }
 
 module.exports = {
     createGame,
     move,
     getValidMoves,
-
+    sendFrontEnd
 }
